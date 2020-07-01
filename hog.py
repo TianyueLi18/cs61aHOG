@@ -263,7 +263,12 @@ def make_averaged(original_function, trials_count=1000):
     3.0
     """
     # BEGIN PROBLEM 8
-    "*** YOUR CODE HERE ***"
+    def average(*args):
+        sum = 0 
+        for i in range(trials_count):
+            sum += original_function(*args)
+        return sum / trials_count
+    return average
     # END PROBLEM 8
 
 
@@ -277,7 +282,13 @@ def max_scoring_num_rolls(dice=six_sided, trials_count=1000):
     1
     """
     # BEGIN PROBLEM 9
-    "*** YOUR CODE HERE ***"
+    num_rolls, average = 0, 0
+    for i in range(10):
+        current = make_averaged(roll_dice, trials_count)(i + 1, dice)
+        if current > average:
+            average = current
+            num_rolls = i + 1
+    return num_rolls
     # END PROBLEM 9
 
 
@@ -342,9 +353,10 @@ def swap_strategy(score, opponent_score, cutoff=8, num_rolls=6):
     # BEGIN PROBLEM 11
     changed = score + free_bacon(opponent_score)
     if is_swap(changed, opponent_score):
-        changed, opponent_score = opponent_score, changed
-        if changed > score:
+        if changed <= opponent_score:
             return 0
+        else:
+            return num_rolls
     else:
         return bacon_strategy(score, opponent_score, cutoff, num_rolls)
     # END PROBLEM 11
